@@ -37,6 +37,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onChanged(ArrayList<ForumPost> forumPosts) {
                 Log.d("TEST", "Data Loaded");
+                Log.d("TEST", forumPosts.toString());
             }
         });
     }

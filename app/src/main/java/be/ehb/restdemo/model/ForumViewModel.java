@@ -7,6 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -27,6 +31,8 @@ public class ForumViewModel extends AndroidViewModel {
     }
 
     public MutableLiveData<ArrayList<ForumPost>> getForumPosts() {
+       ArrayList<ForumPost> posts = new ArrayList<>();
+
         mExecutorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -40,12 +46,34 @@ public class ForumViewModel extends AndroidViewModel {
 
                     Response mResponse = mClient.newCall(mRequest).execute();
 
-                    Log.d("TEST", mResponse.body().string());
+                    String responsePlainText = mResponse.body().string();
+                    JSONArray postArray = new JSONArray(responsePlainText);
+
+                    int nObjects = postArray.length();
+                    int i = 0;
+
+                    while(i < nObjects){
+                        JSONObject currentPostJSON = postArray.getJSONObject(i);
+
+                        ForumPost currentPostJava = new ForumPost(
+                                currentPostJSON.getInt("userId"),
+                                currentPostJSON.getInt("id"),
+                                currentPostJSON.getString("title"),
+                                currentPostJSON.getString("body")
+                        );
+                        posts.add(currentPostJava);
+                        i++;
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+                forumPosts.postValue(posts);
             }
         });
+
         return forumPosts;
     }
 }
