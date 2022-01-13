@@ -1,4 +1,4 @@
-package be.ehb.restdemo.ui;
+package be.ehb.restdemo.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

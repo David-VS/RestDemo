@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="be.ehb.restdemo.ui.FirstFragment"
+        android:name="be.ehb.restdemo.ui.fragments.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first"/>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="be.ehb.restdemo.ui.SecondFragment"
+        android:name="be.ehb.restdemo.ui.fragments.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second"/>
 </navigation>

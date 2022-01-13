@@ -1,4 +1,4 @@
-package be.ehb.restdemo.ui;
+package be.ehb.restdemo.ui.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,12 +11,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import be.ehb.restdemo.R;
 import be.ehb.restdemo.model.ForumPost;
 import be.ehb.restdemo.model.ForumViewModel;
+import be.ehb.restdemo.ui.util.ForumPostAdapter;
 
 public class FirstFragment extends Fragment {
 
@@ -32,12 +35,17 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        RecyclerView rvPosts = view.findViewById(R.id.rv_posts);
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        rvPosts.setLayoutManager(mLayoutManager);
+
         ForumViewModel forumViewModel = new ViewModelProvider(getActivity()).get(ForumViewModel.class);
         forumViewModel.getForumPosts().observe(getViewLifecycleOwner(), new Observer<ArrayList<ForumPost>>() {
             @Override
             public void onChanged(ArrayList<ForumPost> forumPosts) {
-                Log.d("TEST", "Data Loaded");
-                Log.d("TEST", forumPosts.toString());
+                ForumPostAdapter mAdapter = new ForumPostAdapter(forumPosts);
+                rvPosts.setAdapter(mAdapter);
             }
         });
     }
